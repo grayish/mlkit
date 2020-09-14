@@ -782,14 +782,24 @@ extension ViewController {
     
     sessionQueue.async {
       if let testPoseDetector = self.testPoseDetector {
+        do {  // first run for initialization
+          try testPoseDetector.results(in: visionImage)
+        } catch let error {
+          print("Failed to detect poses with error: \(error.localizedDescription).")
+          return
+        }
+        
         var poses: [Pose]
-        for i in 1 ... 100 {
+        var elapsed_times : [Double] = []
+
+        for i in 1 ... 1000 {
           do {
             let s1 = DispatchTime.now()
             poses = try testPoseDetector.results(in: visionImage)
             let s2 = DispatchTime.now()
             let nanoTime1 = s2.uptimeNanoseconds - s1.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
             let timeInterval1 = Double(nanoTime1) / 1_000_000 // Technically could overflow for long running
+            elapsed_times.append(timeInterval1)
             print("Stream mode: \(timeInterval1)ms")
           } catch let error {
             print("Failed to detect poses with error: \(error.localizedDescription).")
@@ -800,6 +810,10 @@ extension ViewController {
             return
           }
         }
+        print("Statistics: MAX \(elapsed_times.max())ms")
+        print("Statistics: MIN \(elapsed_times.min())ms")
+        print("Statistics: MIN \(elapsed_times.reduce(0.0, +) / Double(elapsed_times.count))ms")
+
       }
     }
 
