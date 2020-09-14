@@ -38,7 +38,30 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
 
   // Image counter.
   var currentImage = 0
-
+  
+  private lazy var sessionQueue = DispatchQueue(label: "com.sang-bin.test")
+  private let poseDetectorQueue = DispatchQueue(label: "com.google.mlkit.pose")
+  private var _testPoseDetector: PoseDetector? = nil
+  private var testPoseDetector: PoseDetector? {
+    get {
+      var detector: PoseDetector? = nil
+      poseDetectorQueue.sync {
+        if _testPoseDetector == nil {
+          let options = PoseDetectorOptions()
+          options.detectorMode = .stream
+          options.performanceMode = .accurate
+          _testPoseDetector = PoseDetector.poseDetector(options: options)
+        }
+        detector = _testPoseDetector
+      }
+      return detector
+    }
+    set(newDetector) {
+      poseDetectorQueue.sync {
+        _testPoseDetector = newDetector
+      }
+    }
+  }
   /// The detector used for detecting poses. The pose detector's lifecycle is managed manually, so
   /// it is initialized on-demand via the getter override and set to nil when a new detector is
   /// chosen.
@@ -756,6 +779,29 @@ extension ViewController {
     // Initialize a VisionImage object with the given UIImage.
     let visionImage = VisionImage(image: image)
     visionImage.orientation = image.imageOrientation
+    
+    sessionQueue.async {
+      if let testPoseDetector = self.testPoseDetector {
+        var poses: [Pose]
+        for i in 1 ... 100 {
+          do {
+            let s1 = DispatchTime.now()
+            poses = try testPoseDetector.results(in: visionImage)
+            let s2 = DispatchTime.now()
+            let nanoTime1 = s2.uptimeNanoseconds - s1.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
+            let timeInterval1 = Double(nanoTime1) / 1_000_000 // Technically could overflow for long running
+            print("Stream mode: \(timeInterval1)ms")
+          } catch let error {
+            print("Failed to detect poses with error: \(error.localizedDescription).")
+            return
+          }
+          guard !poses.isEmpty else {
+            print("Pose detector returned no results.")
+            return
+          }
+        }
+      }
+    }
 
     if let poseDetector = self.poseDetector {
       poseDetector.process(visionImage) { poses, error in
