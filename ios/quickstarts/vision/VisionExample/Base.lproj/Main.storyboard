@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="0Q6-lG-sCk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="0Q6-lG-sCk">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -65,6 +65,12 @@
                                     <barButtonItem enabled="NO" image="video_camera" id="M1D-Qg-lKI" userLabel="Video Camera Button">
                                         <connections>
                                             <segue destination="YXl-5B-mBF" kind="show" identifier="showCameraViewController" id="M0h-0G-c32"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ja6-67-JHc"/>
+                                    <barButtonItem image="playpause.fill" catalog="system" style="plain" id="bx6-Z9-75k" userLabel="InVideo Button">
+                                        <connections>
+                                            <segue destination="Tpv-eE-J7U" kind="show" id="Z8z-s6-94f"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="1ha-dt-VEM"/>
@@ -174,10 +180,56 @@
             </objects>
             <point key="canvasLocation" x="853.60000000000002" y="133.5832083958021"/>
         </scene>
+        <!--In Video Controller-->
+        <scene sceneID="aQV-bt-K8O">
+            <objects>
+                <viewController id="Tpv-eE-J7U" customClass="InVideoController" customModule="VisionExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="8ao-FS-maV"/>
+                        <viewControllerLayoutGuide type="bottom" id="UBW-uE-vZq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jpj-Yh-4oc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PFY-Ay-8Ae" userLabel="InVideo View">
+                                <rect key="frame" x="33" y="72" width="310" height="260"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yju-ag-BRs" userLabel="Player View">
+                                <rect key="frame" x="68" y="410" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="Qng-rz-HDE">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="C1a-Kg-LlM">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="U6b-o8-rSP">
+                                <rect key="frame" x="276" y="7" width="83" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="inVideoView" destination="PFY-Ay-8Ae" id="Je3-Ua-t8W"/>
+                        <outlet property="playerView" destination="Yju-ag-BRs" id="13Y-t9-2oP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c8F-zI-Oid" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="853.60000000000002" y="927.88605697151434"/>
+        </scene>
     </scenes>
     <resources>
         <image name="photo_camera" width="36" height="36"/>
         <image name="photo_library" width="36" height="36"/>
+        <image name="playpause.fill" catalog="system" width="128" height="73"/>
         <image name="switch_camera" width="36" height="36"/>
         <image name="video_camera" width="36" height="36"/>
     </resources>
