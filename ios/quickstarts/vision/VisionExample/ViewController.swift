@@ -65,19 +65,35 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
   /// The detector used for detecting poses. The pose detector's lifecycle is managed manually, so
   /// it is initialized on-demand via the getter override and set to nil when a new detector is
   /// chosen.
-  private var _poseDetector: PoseDetector? = nil
-  private var poseDetector: PoseDetector? {
+  private var _poseDetectorAccurate: PoseDetector? = nil
+  private var poseDetectorAccurate: PoseDetector? {
     get {
-      if _poseDetector == nil {
+      if _poseDetectorAccurate == nil {
         let options = PoseDetectorOptions()
         options.detectorMode = .singleImage
         options.performanceMode = .accurate
-        _poseDetector = PoseDetector.poseDetector(options: options)
+        _poseDetectorAccurate = PoseDetector.poseDetector(options: options)
       }
-      return _poseDetector
+      return _poseDetectorAccurate
     }
     set(newDetector) {
-      _poseDetector = newDetector
+      _poseDetectorAccurate = newDetector
+    }
+  }
+  
+  private var _poseDetectorFast: PoseDetector? = nil
+  private var poseDetectorFast: PoseDetector? {
+    get {
+      if _poseDetectorFast == nil {
+        let options = PoseDetectorOptions()
+        options.detectorMode = .singleImage
+        options.performanceMode = .fast
+        _poseDetectorFast = PoseDetector.poseDetector(options: options)
+      }
+      return _poseDetectorFast
+    }
+    set(newDetector) {
+      _poseDetectorFast = newDetector
     }
   }
 
@@ -123,7 +139,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
       photoCameraButton.isEnabled = false
     }
 
-    let defaultRow = (DetectorPickerRow.rowsCount / 2) - 1
+    let defaultRow = 14
     detectorPicker.selectRow(defaultRow, inComponent: 0, animated: false)
   }
 
@@ -190,8 +206,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         options.shouldEnableMultipleObjects = shouldEnableMultipleObjects
         options.detectorMode = .singleImage
         detectObjectsOnDevice(in: imageView.image, options: options)
-      case .detectPose:
-        detectPose(image: imageView.image)
+      case .detectPoseAccurate:
+        detectPose(image: imageView.image, isfast: true)
+      case .detectPoseFast:
+        detectPose(image: imageView.image, isfast: false)
+      case .evalSpeed:
+        getDetectorSpeed(image: imageView.image)
       }
     } else {
       print("No such item at row \(row) in detector picker.")
@@ -654,10 +674,15 @@ extension ViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     clearResults()
 
     if let rowIndex = DetectorPickerRow(rawValue: row) {
-      if rowIndex != .detectPose {
+      if rowIndex != .detectPoseAccurate {
         // Reset the pose detector to `nil` when a new detector row is chosen. The detector will be
         // re-initialized via its getter when it is needed for detection again.
-        poseDetector = nil
+        poseDetectorAccurate = nil
+      }
+      if rowIndex != .detectPoseFast {
+        // Reset the pose detector to `nil` when a new detector row is chosen. The detector will be
+        // re-initialized via its getter when it is needed for detection again.
+        poseDetectorAccurate = nil
       }
     }
   }
@@ -768,14 +793,10 @@ extension ViewController {
     }
     // [END detect_faces]
   }
-
-  /// Detects poses on the specified image and draw pose landmark points and line segments using
-  /// the On-Device face API.
-  ///
-  /// - Parameter image: The image.
-  func detectPose(image: UIImage?) {
+  
+  func getDetectorSpeed(image: UIImage?) {
     guard let image = image else { return }
-
+    
     // Initialize a VisionImage object with the given UIImage.
     let visionImage = VisionImage(image: image)
     visionImage.orientation = image.imageOrientation
@@ -792,7 +813,7 @@ extension ViewController {
         var poses: [Pose]
         var elapsed_times : [Double] = []
 
-        for i in 1 ... 1000 {
+        for _ in 1 ... 1000 {
           do {
             let s1 = DispatchTime.now()
             poses = try testPoseDetector.results(in: visionImage)
@@ -816,8 +837,20 @@ extension ViewController {
 
       }
     }
+  }
 
-    if let poseDetector = self.poseDetector {
+  /// Detects poses on the specified image and draw pose landmark points and line segments using
+  /// the On-Device face API.
+  ///
+  /// - Parameter image: The image.
+  func detectPose(image: UIImage?, isfast mode: Bool) {
+    guard let image = image else { return }
+
+    // Initialize a VisionImage object with the given UIImage.
+    let visionImage = VisionImage(image: image)
+    visionImage.orientation = image.imageOrientation
+
+    if let poseDetector = mode ? self.poseDetectorAccurate : self.poseDetectorFast {
       poseDetector.process(visionImage) { poses, error in
         guard error == nil, let poses = poses, !poses.isEmpty else {
           let errorString = error?.localizedDescription ?? Constants.detectionNoResultsMessage
@@ -1073,9 +1106,11 @@ private enum DetectorPickerRow: Int {
     detectObjectsCustomProminentWithClassifier,
     detectObjectsCustomMultipleNoClassifier,
     detectObjectsCustomMultipleWithClassifier,
-    detectPose
+    detectPoseAccurate,
+    detectPoseFast,
+    evalSpeed
 
-  static let rowsCount = 14
+  static let rowsCount = 16
   static let componentsCount = 1
 
   public var description: String {
@@ -1106,8 +1141,12 @@ private enum DetectorPickerRow: Int {
       return "ODT, custom, multiple, no labeling"
     case .detectObjectsCustomMultipleWithClassifier:
       return "ODT, custom, multiple, labeling"
-    case .detectPose:
-      return "Pose"
+    case .detectPoseAccurate:
+      return "Pose Accurate"
+    case .detectPoseFast:
+      return "Pose Fast"
+    case .evalSpeed:
+      return "Evaluate the speed of pose detection"
     }
   }
 }
