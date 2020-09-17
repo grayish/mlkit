@@ -41,6 +41,9 @@
 		BB287B3920729CE90069707A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB287B3820729CE90069707A /* AppDelegate.swift */; };
 		BB287B3E20729CE90069707A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB287B3C20729CE90069707A /* Main.storyboard */; };
 		CE1BF5272510883C00E1F857 /* InVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1BF5262510883C00E1F857 /* InVideoView.swift */; };
+		CE713B1F251301750040E587 /* yoga2.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = CE713B1C251301750040E587 /* yoga2.jpeg */; };
+		CE713B20251301750040E587 /* yoga1.png in Resources */ = {isa = PBXBuildFile; fileRef = CE713B1D251301750040E587 /* yoga1.png */; };
+		CE713B21251301750040E587 /* yoga3.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = CE713B1E251301750040E587 /* yoga3.jpeg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +81,9 @@
 		BB287B3D20729CE90069707A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BB287B4420729CE90069707A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE1BF5262510883C00E1F857 /* InVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InVideoView.swift; sourceTree = "<group>"; };
+		CE713B1C251301750040E587 /* yoga2.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = yoga2.jpeg; sourceTree = "<group>"; };
+		CE713B1D251301750040E587 /* yoga1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yoga1.png; sourceTree = "<group>"; };
+		CE713B1E251301750040E587 /* yoga3.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = yoga3.jpeg; sourceTree = "<group>"; };
 		DE184D9E9F72C26A1969FB39 /* Pods_VisionExampleObjc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VisionExampleObjc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F907CCB86F0DB9833F303C49 /* Pods-VisionExampleObjc.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VisionExampleObjc.debug.xcconfig"; path = "Target Support Files/Pods-VisionExampleObjc/Pods-VisionExampleObjc.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -105,6 +111,9 @@
 		10224B642087E52600A77316 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CE713B1D251301750040E587 /* yoga1.png */,
+				CE713B1C251301750040E587 /* yoga2.jpeg */,
+				CE713B1E251301750040E587 /* yoga3.jpeg */,
 				10224B702087E5A900A77316 /* grace_hopper.jpg */,
 				7202DC6620D0C1A300034C35 /* barcode_128.png */,
 				7202DC6720D0C1A300034C35 /* beach.jpg */,
@@ -305,16 +314,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE713B1F251301750040E587 /* yoga2.jpeg in Resources */,
 				10224B762087E5A900A77316 /* grace_hopper.jpg in Resources */,
 				7202DC6C20D0C1A300034C35 /* beach.jpg in Resources */,
 				7202DC6920D0C1A300034C35 /* qr_code.jpg in Resources */,
 				7202DC6B20D0C1A300034C35 /* barcode_128.png in Resources */,
+				CE713B20251301750040E587 /* yoga1.png in Resources */,
 				7202DC6A20D0C1A300034C35 /* image_has_text.jpg in Resources */,
 				BB287B3E20729CE90069707A /* Main.storyboard in Resources */,
 				A4F8929B243BB4BF00B58767 /* bird.jpg in Resources */,
 				1001E6FD20CF0C8F00445CB3 /* Assets.xcassets in Resources */,
 				A4F89299243BB4BF00B58767 /* bird.tflite in Resources */,
 				1077670E210FBBB6007A19A7 /* liberty.jpg in Resources */,
+				CE713B21251301750040E587 /* yoga3.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

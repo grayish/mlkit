@@ -1154,7 +1154,11 @@ private enum DetectorPickerRow: Int {
 private enum Constants {
   static let images = [
     "grace_hopper.jpg", "barcode_128.png", "qr_code.jpg", "beach.jpg",
-    "image_has_text.jpg", "liberty.jpg", "bird.jpg",
+    "image_has_text.jpg", "liberty.jpg", "bird.jpg","test1.png",
+    // yoga
+    "yoga1.png",
+    "yoga2.jpeg",
+    "yoga3.jpeg",
   ]
 
   static let detectionNoResultsMessage = "No results returned."
