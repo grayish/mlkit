@@ -207,9 +207,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         options.detectorMode = .singleImage
         detectObjectsOnDevice(in: imageView.image, options: options)
       case .detectPoseAccurate:
-        detectPose(image: imageView.image, isfast: true)
-      case .detectPoseFast:
         detectPose(image: imageView.image, isfast: false)
+      case .detectPoseFast:
+        detectPose(image: imageView.image, isfast: true)
       case .evalSpeed:
         getDetectorSpeed(image: imageView.image)
       }
@@ -813,10 +813,14 @@ extension ViewController {
         var poses: [Pose]
         var elapsed_times : [Double] = []
 
-        for _ in 1 ... 1000 {
+        for _ in 1 ... 400 {
           do {
             let s1 = DispatchTime.now()
             poses = try testPoseDetector.results(in: visionImage)
+//            guard !poses.isEmpty else {
+//              print("Pose detector returned no results.")
+//              continue
+//            }
             let s2 = DispatchTime.now()
             let nanoTime1 = s2.uptimeNanoseconds - s1.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
             let timeInterval1 = Double(nanoTime1) / 1_000_000 // Technically could overflow for long running
@@ -850,7 +854,7 @@ extension ViewController {
     let visionImage = VisionImage(image: image)
     visionImage.orientation = image.imageOrientation
 
-    if let poseDetector = mode ? self.poseDetectorAccurate : self.poseDetectorFast {
+    if let poseDetector = mode ? self.poseDetectorFast : self.poseDetectorAccurate {
       poseDetector.process(visionImage) { poses, error in
         guard error == nil, let poses = poses, !poses.isEmpty else {
           let errorString = error?.localizedDescription ?? Constants.detectionNoResultsMessage
