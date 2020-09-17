@@ -830,15 +830,13 @@ extension ViewController {
             print("Failed to detect poses with error: \(error.localizedDescription).")
             return
           }
-          guard !poses.isEmpty else {
-            print("Pose detector returned no results.")
-            return
-          }
         }
-        print("Statistics: MAX \(elapsed_times.max())ms")
-        print("Statistics: MIN \(elapsed_times.min())ms")
-        print("Statistics: MIN \(elapsed_times.reduce(0.0, +) / Double(elapsed_times.count))ms")
-
+        let avg_time = elapsed_times.reduce(0.0, +) / Double(elapsed_times.count)
+        let max_time = elapsed_times.max()!
+        let min_time = elapsed_times.min()!
+        print(String(format: "Statistics: AVG %.2f ms, fps %.2f", avg_time, 1000.0 / avg_time))
+        print(String(format: "Statistics: MAX %.2f ms, fps %.2f", max_time, 1000.0 / max_time))
+        print(String(format: "Statistics: MAX %.2f ms, fps %.2f", min_time, 1000.0 / min_time))
       }
     }
   }
